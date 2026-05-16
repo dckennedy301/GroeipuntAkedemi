@@ -14,7 +14,7 @@
   --green-light:   #C0DED5;
   --green-dark:    #3A8F78;
   --green-bg:      #EDF6F3;
-  --green-footer:  #6BBE9F;
+  --green-footer:  #7fb89d;
   --charcoal:      #3C3A38;
   --charcoal-lt:   #5A5856;
   --white:         #FFFFFF;
@@ -151,7 +151,7 @@ section { padding: 96px 0; }
    TOP BAR
 ================================================================ */
 .topbar {
-  background: var(--green-light);
+  background: var(--green-footer);
   height: var(--topbar-h);
   display: flex;
   align-items: center;
@@ -195,19 +195,14 @@ section { padding: 96px 0; }
   left: 0;
   right: 0;
   z-index: 999;
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  transition: box-shadow 0.3s var(--ease);
-}
-
-#nav.scrolled {
-  box-shadow: 0 2px 20px rgba(0,0,0,0.09);
+  background: transparent;
 }
 
 .nav__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 8px;
   height: var(--nav-h);
 }
 
@@ -368,7 +363,12 @@ section { padding: 96px 0; }
   position: relative;
   min-height: 88vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 40px;
+  padding: calc(60px + var(--nav-h)) 0 60px;
+  margin-top: calc(-1 * var(--nav-h));
   overflow: hidden;
 }
 
@@ -390,7 +390,19 @@ section { padding: 96px 0; }
   position: relative;
   z-index: 1;
   max-width: 580px;
-  padding: 80px 0;
+  padding: 0;
+}
+
+.hero__logo-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hero__logo-img {
+  height: clamp(130px, 18vw, 200px);
+  width: auto;
 }
 
 .hero__badge {
@@ -991,6 +1003,11 @@ section { padding: 96px 0; }
 
 .form-group textarea { resize: vertical; min-height: 116px; }
 
+.contact__form-actions {
+  display: flex;
+  gap: 12px;
+}
+
 /* Map placeholder */
 .map-placeholder {
   background: var(--bg-alt);
@@ -1033,9 +1050,14 @@ section { padding: 96px 0; }
 }
 
 .footer__logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  background: var(--white);
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  width: 200px;
+  height: 200px;
 }
 
 .footer__logo-icon {
@@ -1045,10 +1067,9 @@ section { padding: 96px 0; }
 }
 
 .footer__logo-img {
-  height: 42px;
-  width: auto;
-  flex-shrink: 0;
-  mix-blend-mode: multiply;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .footer__logo-text {

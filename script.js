@@ -1,11 +1,3 @@
-// Nav scroll shadow
-const nav = document.getElementById('nav');
-if (nav) {
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 20);
-  }, { passive: true });
-}
-
 // Hamburger / mobile menu
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -52,17 +44,31 @@ document.querySelectorAll('.nav__links a, .nav__mobile a').forEach(link => {
   }
 });
 
-// Contact form — WhatsApp submission
+// Contact form — WhatsApp & Email submission
 const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name    = contactForm.querySelector('[name="naam"]')?.value.trim() || '';
-    const phone   = contactForm.querySelector('[name="telefoon"]')?.value.trim() || '';
-    const email   = contactForm.querySelector('[name="epos"]')?.value.trim() || '';
-    const grade   = contactForm.querySelector('[name="graad"]')?.value || '';
-    const message = contactForm.querySelector('[name="boodskap"]')?.value.trim() || '';
 
+function getFormFields() {
+  return {
+    name:    contactForm.querySelector('[name="naam"]')?.value.trim() || '',
+    phone:   contactForm.querySelector('[name="telefoon"]')?.value.trim() || '',
+    email:   contactForm.querySelector('[name="epos"]')?.value.trim() || '',
+    grade:   contactForm.querySelector('[name="graad"]')?.value || '',
+    message: contactForm.querySelector('[name="boodskap"]')?.value.trim() || '',
+  };
+}
+
+function validateContactForm() {
+  for (const field of contactForm.querySelectorAll('[required]')) {
+    if (!field.value.trim()) { field.focus(); return false; }
+  }
+  return true;
+}
+
+const submitWhatsApp = document.getElementById('submitWhatsApp');
+if (submitWhatsApp && contactForm) {
+  submitWhatsApp.addEventListener('click', () => {
+    if (!validateContactForm()) return;
+    const { name, phone, email, grade, message } = getFormFields();
     const text = [
       `Hallo GroeiPunt Akademie! 👋`,
       ``,
@@ -74,7 +80,25 @@ if (contactForm) {
       `*Boodskap:*`,
       message,
     ].filter(line => line !== null).join('\n');
+    window.location.href = `https://wa.me/27650831515?text=${encodeURIComponent(text)}`;
+  });
+}
 
-    window.location.href = `https://wa.me/27825133278?text=${encodeURIComponent(text)}`;
+const submitEmail = document.getElementById('submitEmail');
+if (submitEmail && contactForm) {
+  submitEmail.addEventListener('click', () => {
+    if (!validateContactForm()) return;
+    const { name, phone, email, grade, message } = getFormFields();
+    const subject = `Navraag van ${name} — ${grade}`;
+    const body = [
+      `Naam: ${name}`,
+      `Telefoon: ${phone}`,
+      email ? `E-pos: ${email}` : null,
+      `Graad: ${grade}`,
+      ``,
+      `Boodskap:`,
+      message,
+    ].filter(line => line !== null).join('\n');
+    window.location.href = `mailto:groeipunt25@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   });
 }
